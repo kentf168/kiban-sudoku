@@ -181,11 +181,14 @@ html, body {
   position: absolute;
   inset: 0;
   background: rgba(28,27,26,0.72);
+  border-radius: 10px;
+  backdrop-filter: blur(2px);
+}
+.win-overlay[hidden] { display: none; }
+.win-overlay:not([hidden]) {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  backdrop-filter: blur(2px);
 }
 .win-card {
   text-align: center;
