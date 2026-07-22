@@ -1,4 +1,7 @@
-const CACHE = "kiban-sudoku-v1";
+// Bump this on every deploy that changes app.js / styles.css / index.html.
+// Changing this string is what makes the browser notice the service worker
+// itself changed, install the new one, and drop old cached files.
+const CACHE = "kiban-sudoku-v2";
 const ASSETS = [
   "./",
   "./index.html",
@@ -24,17 +27,17 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+// Network-first: always try to fetch the live version first (so a fresh
+// deploy shows up immediately), and only fall back to the cache when
+// there's no network (real offline play).
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-      return fetch(event.request).then((response) => {
-        if (event.request.method === "GET" && response.ok) {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(event.request, copy));
-        }
-        return response;
-      }).catch(() => cached);
-    })
+    fetch(event.request).then((response) => {
+      if (event.request.method === "GET" && response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE).then((cache) => cache.put(event.request, copy));
+      }
+      return response;
+    }).catch(() => caches.match(event.request))
   );
 });
