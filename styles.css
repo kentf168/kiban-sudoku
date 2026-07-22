@@ -215,16 +215,17 @@ html, body {
 .numpad {
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  gap: 6px;
+  gap: 8px;
 }
 .num {
-  aspect-ratio: 1;
+  aspect-ratio: 0.82;
   border: none;
-  border-radius: 9px;
+  border-radius: 10px;
   background: var(--charcoal-raised);
   color: var(--ivory);
   font-family: var(--serif);
-  font-size: 18px;
+  font-size: clamp(20px, 5.6vw, 26px);
+  font-weight: 600;
   cursor: pointer;
 }
 .num:active { background: var(--jade); }
